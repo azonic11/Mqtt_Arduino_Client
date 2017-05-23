@@ -7,7 +7,7 @@ void SerialLeasener(){
               if(message[i]=='$'){
                 topic=message.substring(0,i);
                 command=message.substring(i+1,message.length()-2);
-              }
+              
                   //#####################################################################################
                   if(topic=="mainLight"){
                     if(command=="0"){
@@ -153,7 +153,7 @@ void SerialLeasener(){
                           delay(200);
                     }
                     
-                  
+              }
 
                  
                   if(message[i]=='&'){
