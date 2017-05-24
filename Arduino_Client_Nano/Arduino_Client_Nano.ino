@@ -15,7 +15,17 @@
     String    tempMessage;
     String    stringBuff;
     
-    struct    RGB {int r,g,b;};
+    struct    RGB {
+                    int r,g,b;
+
+                    boolean equals(RGB rgb){
+                      if(((rgb.r==r && rgb.g==g) && rgb.b==b))
+                        return true;
+                      else
+                        return false;
+              };
+    
+    };
    
     
     RGB       savedRGB;
@@ -24,10 +34,6 @@
     RGB       white;
     RGB       currentRGB;
 
-    
-                      
-
-    
     char             rgbBuf[10];
     char             timeBuf[10];
     
@@ -55,7 +61,7 @@
                            return (stringBuff);      
                            };
                            
-                          boolean equale(myTime t){
+                          boolean equals(myTime t){
                             if(minute==t.minute&&hour==t.hour)
                               return true;
                             else
@@ -124,8 +130,8 @@
       
           }
      
-     thermoMeter(2,10000);  //  (int digitsAfterPoint,int sendInterval(ms) )
-     Time();
-     SerialLeasener();
+     thermoMeter(10000);  //  (int sendInterval(ms) )
+     myTime();            
+     serialLeasener();
      
     }

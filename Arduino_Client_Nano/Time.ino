@@ -1,6 +1,6 @@
-void Time(){
+void myTime(){
 
-  //refresh time every 1min
+  //refreshing time every 1min
   
   if(currentTime.hour!=-1){
     if (currentMillis - previousMillis2 >= 60000) {   //if 60s have passed
@@ -21,10 +21,10 @@ void Time(){
              delay(200);
 
             //check alarm every 1min #####################################
-            if(currentTime.equale(alarm)){
+            if(currentTime.equals(alarm)){
                digitalWrite(MainLight,LOW);
                digitalWrite(BadLight,LOW);
-               softRGB(white);
+               smoothRGB(white);
   
                Serial.println("badRoom/mainLight&1");
                delay(200);
@@ -37,13 +37,13 @@ void Time(){
 
             //check sleep every 1min #####################################
             
-             if(currentTime.equale(sleep)){
+             if(currentTime.equals(sleep)){
 
                digitalWrite(BadLight,HIGH);
                digitalWrite(Relay3,LOW);
                digitalWrite(Relay4,HIGH);
                
-               softRGB(black);
+               smoothRGB(black);
                 
                Serial.println("badRoom/relay1&1");
                delay(200);

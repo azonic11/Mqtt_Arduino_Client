@@ -1,22 +1,20 @@
 
-void SerialLeasener(){
+void serialLeasener(){
   
-     if(Serial.available()>0){
-            message=Serial.readString();
-            for(int i=0;i<message.length();i++){
-              if(message[i]=='$'){
+     if(Serial.available()>0){                         //Leasining for data, data example "badRoom/mainLight$1"
+            message=Serial.readString();               //where topic is "badRoom/mainLight" and command is "1"
+            for(int i=0;i<message.length();i++){       
+              if(message[i]=='$'){                     //Searching for separator
                 topic=message.substring(0,i);
                 command=message.substring(i+1,message.length()-2);
               
                   //#####################################################################################
+                
                   if(topic=="mainLight"){
-                    if(command=="0"){
-                      digitalWrite(MainLight,HIGH);
-                      Serial.println("badRoom/text&lol");
-                    }else{
-                      digitalWrite(MainLight,LOW);
-                      Serial.println("badRoom/text&gg");
-                    }
+                    if(command=="0")
+                      digitalWrite(MainLight,HIGH); //turn off 
+                    else
+                      digitalWrite(MainLight,LOW);  //turn on
                   }
                   //#####################################################################################
                    
@@ -28,57 +26,53 @@ void SerialLeasener(){
                   }
 
                   //#####################################################################################
+                
                   else if(topic=="barLight"){
                    
                     newBrightness=(int)command.toInt();
-                   // String buf1="badRoom/text&";
-                   //  buf1=buf1+newBrightness;
-                    //Serial.println(buf1);
                     if(newBrightness>barLightBrightness){
                       while(newBrightness!=barLightBrightness){
                         delay(2);
                         barLightBrightness=barLightBrightness+1;
                         analogWrite(BarLight,barLightBrightness);
-                      } 
-                      
+                     }  
                     }
-                    //#####################################################################################
+                 
                    else if(newBrightness<barLightBrightness){
                       while(newBrightness!=barLightBrightness){
                         delay(2);
                         barLightBrightness=barLightBrightness-1;
                         analogWrite(BarLight,barLightBrightness);
                       } 
-                    }
-                         
+                    }    
                   }
 
                   //#####################################################################################
+               
                   else if(topic=="transmitt"){
-//                      const char *msg = "hello";
-//                      vw_send((uint8_t *)msg, strlen(msg));
-//                      vw_wait_tx(); // Wait until the whole message is gone
-                      
+                      //coming soon
                   }
                   
                   //#####################################################################################
-                  else if(topic=="RGB"){
+                 
+                  else if(topic=="RGB"){      //turn on/off rgb strip
                     if(command=="1"){
                       if(savedRGB.r+savedRGB.g+savedRGB.b!=0){
-                        softRGB(savedRGB);
+                        smoothRGB(savedRGB);
                         currentRGB=savedRGB;
                       }else{
-                        softRGB(white);
+                        smoothRGB(white);
                         currentRGB=white;
                     }}
                     else if(command=="0"){
-                       softRGB(black);
+                       smoothRGB(black);
                        currentRGB=black;
                     }
                   }
 
                   //#####################################################################################
-                   else if(topic=="RGBColor"){
+                 
+                   else if(topic=="RGBColor"){  //set color for rgb strip
                     
                      command.substring(1,3).toCharArray(rgbBuf, 10);
                      newRGB.r=(int)strtol(rgbBuf, 0,16);
@@ -89,7 +83,7 @@ void SerialLeasener(){
                      command.substring(5,7).toCharArray(rgbBuf,10);
                      newRGB.b=(int)strtol(rgbBuf, 0, 16);
                      
-                     softRGB(newRGB);
+                     smoothRGB(newRGB);
                      currentRGB=newRGB;
                      savedRGB=newRGB;
                      if(newRGB.r+newRGB.g+newRGB.b!=0){
@@ -129,7 +123,8 @@ void SerialLeasener(){
                           Serial.println(stringBuff);
                           delay(200);
                     }
-                    
+                     //#####################################################################################
+                  
                     else if(topic=="alarm"){
                       //command.subString(0,2);
                       alarm.hour=command.substring(0,2).toInt();
@@ -141,7 +136,8 @@ void SerialLeasener(){
                           delay(200);
                        
                     }
-
+                     //#####################################################################################
+                    
                       else if(topic=="sleep"){
                       //command.subString(0,2);
                       sleep.hour=command.substring(0,2).toInt();
@@ -152,19 +148,11 @@ void SerialLeasener(){
                           Serial.println(stringBuff);
                           delay(200);
                     }
-                    
+               break;     
               }
 
                  
-                  if(message[i]=='&'){
-                    Serial.println(message);  
-                    break;
-                  }
-                  else{
-                    if(i==message.length()-1){
-                        break;
-                }
-              }
+            
            } 
         }
     }
